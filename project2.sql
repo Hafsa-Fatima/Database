@@ -2,7 +2,7 @@ Create table User_account (
 user_id int not null, 
 Name varchar(20) not null, 
 phone_no char(12), 
-role int not null, 
+role int , 
 primary key(user_id));
 
 Create table User_role (
