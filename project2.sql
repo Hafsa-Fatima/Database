@@ -1,23 +1,27 @@
 Create table User_account (
 user_id int not null, 
-Name varchar(20) not null, 
+Name varchar(20) not null , 
 phone_no char(12), 
-role int);
+role int,
+unique(Name));
 
 Create table User_role (
 role_no int not null, 
 Name varchar(20) not null, 
-description varchar(50));
+description varchar(50),
+unique (Name));
 
 Create table Tables (
 Tname varchar(20) not null, 
 user_id int not null, 
-primary key(Tname, user_id));
+primary key(Tname, user_id),
+unique (Tname));
 
 Create table p_Privileges (
 privilege_no int not null, 
 privilege_col varchar(20) not null, 
-privilege_type varchar (10) not null);
+privilege_type varchar (10) not null,
+unique (privilege_col));
 
 Create table Acc_role_privilege (
 role_no int not null , 

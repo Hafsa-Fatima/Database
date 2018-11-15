@@ -18,10 +18,7 @@
                 </div>
                 <div class="col-sm-12 centr ">
 					USER_NAME : <input type="text" name="username">	
-                    USER_NUMBER : <input type="number" name="uno">
                     PHONE:<input type="text" name="phone">
-                </div>
-                <div class="col-sm-12 centr">
                     ROLE:<select name="role1" >
 						<option value="NULL">CHOOSE ONE </option>
                         <option value="NULL">NULL</option>
@@ -36,7 +33,7 @@
                     <?php
                         if(isset($_POST['submit1'])){
                             // echo $_POST['role1'];
-                            $query1="insert into user_account values (".$_POST['uno'].",'".$_POST['username']."','".$_POST['phone']."',".$_POST['role1'].")";
+                            $query1="insert into user_account (Name, phone_no, role) values ('".$_POST['username']."','".$_POST['phone']."',".$_POST['role1'].")";
                             if(queryFunction($query1)){
                                 echo "<div class="."success".">Sucessfully inserted new User_Account</div>";
                             }
@@ -51,14 +48,13 @@
                 </div>
                 <div class="col-sm-12 centr ">
 					ROLE NAME : <input type="text" name="rname">	
-                    ROLE_NUMBER : <input type="number" name="role_no1">
                     DESCRIPTION : <input type="text" name="des">
                 </div>
                 <div class="col-sm-12 centr">
                     <input type="submit" name="submit2" >
                         <?php
                             if(isset($_POST['submit2'])){
-                                $query2="insert into user_role values (".$_POST['role_no1'].",'".$_POST['rname']."','".$_POST['des']."')";
+                                $query2="insert into user_role (Name,description) values ('".$_POST['rname']."','".$_POST['des']."')";
                                 if(queryFunction($query2)){
                                     echo "<div class="."success".">Sucessfully inserted new User_Role</div>";
                                 }
@@ -96,7 +92,6 @@
                 </div>
                 <div class="col-sm-12 centr ">
 					PRIVILEGE NAME : <input type="text" name="pname4">	
-                    PRIVILEGE_NO : <input type="number" name="pno4">
                     PTYPE: <select name="ptype" >
                                 <option value="">CHOOSE ONE </option>
                                 <option value="Account" >Account</option>
@@ -107,8 +102,8 @@
                     <input type="submit" name="submit4" >
                         <?php
                             if(isset($_POST['submit4'] )){
-                                if(!empty($_POST['pno4']) and !empty($_POST['pname4']) and !empty($_POST['ptype'])){
-                                    $query4="insert into p_Privileges values (".$_POST['pno4'].",'".$_POST['pname4']."','".$_POST['ptype']."')";
+                                if(!empty($_POST['pname4']) and !empty($_POST['ptype'])){
+                                    $query4="insert into p_Privileges (privilege_col,privilege_type) values ('".$_POST['pname4']."','".$_POST['ptype']."')";
                                     if(queryFunction($query4)){
                                         echo "<div class="."success".">Sucessfully inserted new privilege</div>";
                                     }

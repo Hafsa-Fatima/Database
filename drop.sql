@@ -4,7 +4,7 @@ drop sequence role_inc;
 
 drop trigger priv_trigger;
 drop trigger role_trigger;
-drop trigger user_id_inc;
+drop trigger user_acc_trig;
 
 alter table Relation_role_privilege drop constraint rpfk1 ;
 alter table Relation_role_privilege drop constraint rpfk2 ;
