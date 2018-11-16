@@ -1,11 +1,17 @@
+span.info{
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px;
+}
 .centr{
     text-align: center;
     padding: 12px;
 }
 .container{
-    background-color: antiquewhite;
+    background-color: honeydew;
     padding-top: 20px;
     margin: 10px;
+    border-radius: 10px;
 }
 .bolt{
     font-weight: bold;
@@ -15,4 +21,16 @@
 }
 .fail{
     background-color: lightcoral;
+}
+.query{
+    padding: 5px;
+    background-color: floralwhite;
+    margin-bottom: 2px;
+    margin-top: 2px;
+}
+.form{
+    background-color: darkslategray
+}
+input{
+    border-radius:5px; 
 }

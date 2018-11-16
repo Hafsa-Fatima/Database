@@ -10,7 +10,7 @@
 	</head>
 	<body>
 
-	<form action=""  method="post">
+	<form action=""  method="post" class="form">
 		<div class="container">
 			<div class="row">
                 <div class=col-sm-12>
@@ -20,13 +20,13 @@
 					USER_NAME : <input type="text" name="username">	
                     PHONE:<input type="text" name="phone">
                     ROLE:<select name="role1" >
-						<option value="NULL">CHOOSE ONE </option>
-                        <option value="NULL">NULL</option>
-                    <?php
-                        $queryselect1="select role_no,Name from user_role";
-                        querySelect($queryselect1);
-                    ?>
-                    </select>
+                            <option value="NULL">CHOOSE ONE </option>
+                            <option value="NULL">NULL</option>
+                            <?php
+                                $queryselect1="select role_no,Name from user_role";
+                                querySelect($queryselect1);
+                            ?>
+                        </select>
                 </div>
                 <div class="col-sm-12 centr">
                     <input type="submit" name="submit1" >
@@ -39,7 +39,12 @@
                             }
                             else{
                                 echo "<div class="."fail".">Failure</div>";
-                            }	
+                            }
+                            $querysend1="select user_id from user_account where Name = '".$_POST['username']."'";
+                            $s1=querySend($querysend1);
+                            if($row = oci_fetch_array($s1, OCI_BOTH)){       
+                                echo '<div class="bolt centr">Your unique User_id = <span class="'.'info'.'"style="background-color: floralwhite; color : red; border-radius: 5px; padding: 5px; ">'.$row[0].'</span> </div>';	
+                            }
                         }
                     ?>
                 </div>
@@ -124,7 +129,6 @@
 					USER_ID : <input type="NUMBER" name="user5">	
                     ROLE:<select name="rno5" >
                             <option value="NULL">CHOOSE ONE </option>
-                            <option value="NULL">NULL</option>
                             <?php
                                 $queryselect5="select role_no,Name from user_role";
                                 querySelect($queryselect5);
@@ -156,7 +160,6 @@
                 <div class="col-sm-12 centr ">
 					ROLE : <select name="role6" >
                                 <option value="NULL">CHOOSE ONE </option>
-                                <option value="NULL">NULL</option>
                                 <?php
                                     $queryselect5="select role_no,Name from user_role";
                                     querySelect($queryselect5);
@@ -164,10 +167,9 @@
                             </select>	
                     PRIVILEGE : <select name="pno6" >
                                     <option value="NULL">CHOOSE ONE </option>
-                                    <option value="NULL">NULL</option>
                                     <?php
-                                        $queryselect5="select privilege_no,privilege_col from p_Privileges";
-                                        querySelect($queryselect5);
+                                        $queryselectp5="select privilege_no,privilege_col from p_Privileges where privilege_type='Account'";
+                                        querySelect($queryselectp5);
                                     ?>
                                 </select>
                 </div>
@@ -194,31 +196,97 @@
                     <span class="bolt centr">3.7 Relate a RELATION_PRIVILEGE, ROLE, and TABLE in form and submit</span> 
                 </div>
                 <div class="col-sm-12 centr ">
-					PNO : <input type="text" name="pno7">	
-                    TNAME : <input type="number" name="tname7">
-                    USER_ID :  <input type="number" name="user_id7">      
-                    ROLE : <input type="number" name="role7">
+					PNO : <select name="pno7" >
+                                <option value="NULL">CHOOSE ONE </option>
+                                    <?php
+                                        $queryselect7="select privilege_no,privilege_col from p_Privileges where privilege_type='Relation'";
+                                        querySelect($queryselect7);
+                                    ?>
+                            </select>	
+                    TNAME : <input type="text" name="tname7">      
+                    ROLE : <select name="role7" >
+                                <option value="NULL">CHOOSE ONE </option>
+                                <?php
+                                    $queryselectr7="select role_no,Name from user_role";
+                                    querySelect($queryselectr7);
+                                ?>
+                            </select>
                 </div>
                 <div class="col-sm-12 centr">
                     <input type="submit" name="submit7" >
                         <?php
-                        
+                        if(isset($_POST['submit7'] )){
+                            if(!empty($_POST['tname7']) and !empty($_POST['pno7']) and !empty($_POST['role7'])){
+                                $querySend7="select user_id from tables where tname='".$_POST['tname7']."'";
+                                $s7=querySend($querySend7);
+                                if($row = oci_fetch_array($s7, OCI_BOTH)){
+                                    $query6="insert into relation_role_privilege values (".$_POST['pno7']." ,'".$_POST['tname7']."',".$row[0].",".$_POST['role7'].")";
+                                    if(queryFunction($query6)){
+                                        echo "<div class="."success".">Sucessfully inserted in Acc_role_privilege </div>";
+                                    }
+                                    else{
+                                        echo "<div class="."fail".">Failure</div>";
+                                    }	
+                                }
+                            }
+                            else{
+                                echo "<div class="."fail".">Enter all values</div>";
+                            }
+                        }
                         ?>
                 </div>
                 <div class=col-sm-12>
                     <span class="bolt centr">3.8 retrieve all privileges associate with a particular ROLE, and all privileges associated with a particular USER_ACCOUNT form and submit</span> 
                 </div>
                 <div class="col-sm-12 centr ">
-					ROLENO : <input type="number" name="tname6">
+					ROLENO : <input type="number" name="role8">
                 </div>	
                 <div class="col-sm-12 centr">
                     <input type="submit" name="submit8" >
+                    <?php
+                        if(isset($_POST['submit8'])){
+                            $query8="select privilege_col from p_Privileges where privilege_no in ( select privilege_no from Acc_role_privilege where role_no=".$_POST['role8'].")
+                            union
+                            select privilege_col from p_Privileges where privilege_no in ( select privilege_no from Relation_role_privilege where role=".$_POST['role8'].")";
+                            $s8=querySend($query8);
+                            while (($row = oci_fetch_array($s8, OCI_BOTH)) != false) {
+                                echo '<div style="
+                                padding: 5px;
+                                background-color: floralwhite;
+                                margin-bottom: 3px;
+                                margin-top: 3px;
+                                margin-left: 200px;
+                                margin-right: 200px;
+                            ">'.$row[0] . ' </div>';
+                            }
+                        }
+                    ?>
                 </div>
                 <div class="col-sm-12 centr">
                     USER_ID : <input type="number" name="user_id7">
                 </div>
                 <div class="col-sm-12 centr">
                     <input type="submit" name="submit9" >
+                    <?php
+                        if(isset($_POST['submit9'])){
+                            $query9="
+                            select privilege_col from p_Privileges where privilege_no in ( select privilege_no from Acc_role_privilege, user_account where role_no=role)
+                            union
+                            select privilege_col from p_Privileges where privilege_no in ( select R.privilege_no from Relation_role_privilege R, user_account U where R.role=U.role)";
+                          
+                            $s9=querySend($query9);
+                            while (($row = oci_fetch_array($s9, OCI_BOTH)) != false) {
+                                echo '<div style="
+                                padding: 5px;
+                                background-color: white;
+                                margin-bottom: 3px;
+                                margin-top: 5px;
+                                margin-left: 200px;
+                                margin-right: 200px;
+                            ">'.$row[0] . ' </div>';
+                            }
+                        }
+                    ?>
                 </div>
 			</div>
 		</div>
@@ -286,6 +354,22 @@
                     //echo $row[1] . "<br>\n";
                 }
                 oci_free_statement($s);
+                oci_close($conn);
+            }
+
+            function querySend($query){
+                $conn=connectionOpen();
+                $s = oci_parse($conn, $query);
+				if (!$s) {
+					$m = oci_error($conn);
+					trigger_error('Could not parse statement: '. $m['message'], E_USER_ERROR);
+                }
+				$r = oci_execute($s);
+				if (!$r) {
+					$m = oci_error($s);
+					trigger_error('Could not execute statement: '. $m['message'], E_USER_ERROR);
+                }
+                return $s;
                 oci_close($conn);
             }
 
