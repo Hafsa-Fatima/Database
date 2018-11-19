@@ -91,15 +91,22 @@
                     <input type="submit" name="submit3" >
                         <?php
                             if(isset($_POST['submit3'])){
-                                $tname=$_POST['tname'];
-                                $user_id=$_POST['user_id'];
-                                $query3="insert into tables values ('".$tname."',".$user_id.")";
-                                if(queryFunction($query3)){
-                                    echo "<div class="."success".">Sucessfully inserted new table</div>";
+                                $checkpriv="SELECT user_id FROM User_account U,User_role R,Acc_role_privilege P WHERE U.role = R.role_no and R.role_no = P.role_no and P.Privilege_no=1 and user_id=".$_POST['user_id']."";
+                                $s3=querySend($checkpriv);
+                                if(($row = oci_fetch_array($s3, OCI_BOTH)) != false){
+                                    $tname=$_POST['tname'];
+                                    $user_id=$_POST['user_id'];
+                                    $query3="insert into tables values ('".$tname."',".$user_id.")";
+                                    if(queryFunction($query3)){
+                                        echo "<div class="."success".">Sucessfully inserted new table</div>";
+                                    }
+                                    else{
+                                        echo "<div class="."fail".">Failure</div>";
+                                    }	
                                 }
                                 else{
-                                    echo "<div class="."fail".">Failure</div>";
-                                }	
+                                    echo "<div class="."fail".">USER_ACCOUNT DOES NOT HAVE CREATE TABLE PRIVILEGE</div>";
+                                }
                             }
                         ?>
                 </div>
