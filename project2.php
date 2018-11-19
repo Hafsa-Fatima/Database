@@ -252,7 +252,7 @@
                             while (($row = oci_fetch_array($s8, OCI_BOTH)) != false) {
                                 echo '<div style="
                                 padding: 5px;
-                                background-color: floralwhite;
+                                background-color: white;
                                 margin-bottom: 3px;
                                 margin-top: 3px;
                                 margin-left: 200px;
@@ -263,16 +263,16 @@
                     ?>
                 </div>
                 <div class="col-sm-12 centr">
-                    USER_ID : <input type="number" name="user_id7">
+                    USER_ID : <input type="number" name="user_id9">
                 </div>
                 <div class="col-sm-12 centr">
                     <input type="submit" name="submit9" >
                     <?php
                         if(isset($_POST['submit9'])){
                             $query9="
-                            select privilege_col from p_Privileges where privilege_no in ( select privilege_no from Acc_role_privilege, user_account where role_no=role)
+                            select privilege_col from p_Privileges where privilege_no in ( select privilege_no from Acc_role_privilege A, user_account U where A.role_no=U.role and U.user_id=".$_POST['user_id9'].")
                             union
-                            select privilege_col from p_Privileges where privilege_no in ( select R.privilege_no from Relation_role_privilege R, user_account U where R.role=U.role)";
+                            select privilege_col from p_Privileges where privilege_no in ( select R.privilege_no from Relation_role_privilege R, user_account U where R.role=U.role and U.user_id=".$_POST['user_id9'].")";
                           
                             $s9=querySend($query9);
                             while (($row = oci_fetch_array($s9, OCI_BOTH)) != false) {
@@ -284,6 +284,34 @@
                                 margin-left: 200px;
                                 margin-right: 200px;
                             ">'.$row[0] . ' </div>';
+                            }
+                        }
+                    ?>
+                </div>
+                <div class="col-sm-12 centr">
+                    USER_ID : <input type="number" name="user_id10">
+                    PRIVILEGE : <select name="pno10" >
+                                <option value="NULL">CHOOSE ONE </option>
+                                    <?php
+                                        $queryselect7="select privilege_no,privilege_col from p_Privileges";
+                                        querySelect($queryselect7);
+                                    ?>
+                            </select>                    
+                </div>
+                <div class="col-sm-12 centr">
+                    <input type="submit" name="submit10" >
+                    <?php
+                        if(isset($_POST['submit10'])){
+                            $query10="
+                            select privilege_col from p_Privileges where privilege_no in ( select A.privilege_no from Acc_role_privilege A, user_account U where A.role_no=U.role and U.user_id=".$_POST['user_id10']." and A.privilege_no =".$_POST['pno10'].")
+                            union
+                            select privilege_col from p_Privileges where privilege_no in ( select R.privilege_no from Relation_role_privilege R, user_account U where R.role=U.role and U.user_id=".$_POST['user_id10']." and R.privilege_no=".$_POST['pno10'].")";
+                            $s10=querySend($query10);
+                            if (($row = oci_fetch_array($s10, OCI_BOTH)) != false) {  
+                                echo "<div class="."success"."> GRANTED ".$row[0]." PRIVILEGE </div>";
+                            }
+                            else {
+                                echo "<div class="."fail"."> NOT GRANTED THIS PRIVILEGE </div>";
                             }
                         }
                     ?>
