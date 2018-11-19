@@ -61,8 +61,17 @@ BEGIN
   FROM   dual;
 END;
 /
+CREATE OR REPLACE TRIGGER role_trigger
+BEFORE INSERT ON User_role
+FOR EACH ROW
 
-CREATE OR REPLACE TRIGGER priv_trigger 
+BEGIN
+  SELECT role_inc.NEXTVAL
+  INTO   :new.role_no
+  FROM   dual;
+END;
+/
+CREATE OR REPLACE TRIGGER priv_trigger
 BEFORE INSERT ON p_Privileges
 FOR EACH ROW
 
@@ -73,13 +82,4 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE TRIGGER role_trigger 
-BEFORE INSERT ON User_role
-FOR EACH ROW
 
-BEGIN
-  SELECT role_inc.NEXTVAL
-  INTO   :new.role_no
-  FROM   dual;
-END;
-/
