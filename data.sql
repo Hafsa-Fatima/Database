@@ -14,12 +14,12 @@ insert into user_account (Name,phone_no,role) values ('rose','682-553-6238',103)
 insert into user_account (Name,phone_no,role) values ('fin','682-553-5348',101);
 
 insert into p_Privileges (privilege_col,privilege_type) values ('Create_table','Account');
-insert into p_Privileges (privilege_col,privilege_type) values ('Create_view','Account');
-insert into p_Privileges (privilege_col,privilege_type) values ('Update','Account');
 insert into p_Privileges (privilege_col,privilege_type) values ('Drop','Account');
+insert into p_Privileges (privilege_col,privilege_type) values ('Insert','Account');
 insert into p_Privileges (privilege_col,privilege_type) values ('Delete','Account');
+insert into p_Privileges (privilege_col,privilege_type) values ('Update','Account');
 insert into p_Privileges (privilege_col,privilege_type) values ('Select','Relation');
-insert into p_Privileges (privilege_col,privilege_type) values ('View','Relation');
+insert into p_Privileges (privilege_col,privilege_type) values ('Create_view','Relation');
 
 insert into tables values ('assignmentSubmits',1002);
 insert into tables values ('available_course',1001);
