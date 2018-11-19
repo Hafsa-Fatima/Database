@@ -8,9 +8,9 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	</head>
-	<body>
-
-	<form action=""  method="post" class="form">
+	<body class="form">
+    <h1 class="centr" style="color : white">DATABASE SECURITY</h1>
+	<form action=""  method="post" >
 		<div class="container">
 			<div class="row">
                 <div class=col-sm-12>
@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-sm-12 centr ">
 					USER_NAME : <input type="text" name="username">	
-                    PHONE:<input type="text" name="phone">
+                    PHONE:<input type="text" name="phone" placeholder="10 digits" pattern = "[0-9]{10}" maxlength="10">
                     ROLE:<select name="role1" >
                             <option value="NULL">CHOOSE ONE </option>
                             <option value="NULL">NULL</option>
@@ -32,8 +32,12 @@
                     <input type="submit" name="submit1" >
                     <?php
                         if(isset($_POST['submit1'])){
-                            // echo $_POST['role1'];
-                            $query1="insert into user_account (Name, phone_no, role) values ('".$_POST['username']."','".$_POST['phone']."',".$_POST['role1'].")";
+
+                            if(  preg_match( '/(\d{3})(\d{3})(\d{4})$/', $_POST['phone'],  $matches ) )
+                            {
+                                $result = $matches[1] . '-' .$matches[2] . '-' . $matches[3];
+                            }
+                            $query1="insert into user_account (Name, phone_no, role) values ('".$_POST['username']."','".$result."',".$_POST['role1'].")";
                             if(queryFunction($query1)){
                                 echo "<div class="."success".">Sucessfully inserted new User_Account</div>";
                             }
@@ -43,9 +47,11 @@
                             $querysend1="select user_id from user_account where Name = '".$_POST['username']."'";
                             $s1=querySend($querysend1);
                             if($row = oci_fetch_array($s1, OCI_BOTH)){       
-                                echo '<div class="bolt centr">Your unique User_id = <span class="'.'info'.'"style="background-color: floralwhite; color : red; border-radius: 5px; padding: 5px; ">'.$row[0].'</span> </div>';	
+                                echo '<div class="bolt centr">Your unique User_id = <span class="'.'info'.'"style="background-color: white; color : red; border-radius: 5px; padding: 5px; ">'.$row[0].'</span> </div>';	
                             }
                         }
+                        $data = '1234567890';
+                        
                     ?>
                 </div>
                 <div class=col-sm-12>
@@ -66,6 +72,11 @@
                                 else{
                                     echo "<div class="."fail".">Failure</div>";
                                 }	
+                                $querysend2="select role_no from user_role where Name = '".$_POST['rname']."'";
+                                $s2=querySend($querysend2);
+                                if($row = oci_fetch_array($s2, OCI_BOTH)){       
+                                    echo '<div class="bolt centr">Your unique role_id = <span class="'.'info'.'"style="background-color: white; color : red; border-radius: 5px; padding: 5px; ">'.$row[0].'</span> </div>';	
+                                }
                             }
                         ?>
                 </div>
